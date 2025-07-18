@@ -1,0 +1,56 @@
+services:
+  backend:
+    build: ./backend
+    container_name: neontask-backend
+    ports:
+      - "8001:8001"
+    environment:
+      - CORS_ORIGINS=http://localhost:3000,http://localhost
+    volumes:
+      - ./backend:/app
+    networks:
+      - neontask-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend/todo-app
+    container_name: neontask-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - neontask-network
+    environment:
+      - REACT_APP_API_URL=http://localhost:8001
+
+  # Development frontend (optional)
+  frontend-dev:
+    build:
+      context: ./frontend/todo-app
+      dockerfile: Dockerfile.dev
+    container_name: neontask-frontend-dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/todo-app:/app
+      - /app/node_modules
+    networks:
+      - neontask-network
+    environment:
+      - REACT_APP_API_URL=http://localhost:8001
+    profiles:
+      - dev
+
+networks:
+  neontask-network:
+    driver: bridge
+
+volumes:
+  node_modules:

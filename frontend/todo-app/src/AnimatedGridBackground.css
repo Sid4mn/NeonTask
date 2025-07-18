@@ -1,0 +1,25 @@
+.animated-grid-background {
+  display: grid;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; 
+  background-color: #111;
+  pointer-events: auto;
+}
+  
+.grid-tile {
+  border: none;
+  background-color: #111;
+  pointer-events: auto;
+}
+  
+.cursor-trail {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  pointer-events: none;
+}

@@ -1,0 +1,52 @@
+version: '3'
+
+# Simple task runner I set up while learning this project
+tasks:
+  # Basic Docker stuff
+  start:
+    desc: "Start the app with Docker"
+    cmd: ./docker-manage.sh development up
+
+  stop:
+    desc: "Stop the app"
+    cmd: ./docker-manage.sh development down
+
+  build:
+    desc: "Build Docker images"
+    cmd: ./docker-manage.sh development build
+
+  logs:
+    desc: "Show app logs"
+    cmd: ./docker-manage.sh development logs
+
+  # Development
+  dev-backend:
+    desc: "Run backend locally"
+    dir: backend
+    cmd: uvicorn main:app --reload --host 0.0.0.0 --port 8001
+
+  dev-frontend:
+    desc: "Run frontend locally"
+    dir: frontend/todo-app
+    cmd: npm start
+
+  # Setup
+  install:
+    desc: "Install everything"
+    cmds:
+      - cd backend && pip install -r requirements.txt
+      - cd frontend/todo-app && npm install
+
+  # Production (still learning this part)
+  prod:
+    desc: "Start production environment"
+    cmd: ./docker-manage.sh production up
+
+  # Basic Kubernetes (experimental)
+  k8s-deploy:
+    desc: "Deploy to Kubernetes (experimental)"
+    cmd: ./k8s/deploy.sh staging apply
+
+  k8s-status:
+    desc: "Check Kubernetes status"
+    cmd: ./k8s/deploy.sh staging status

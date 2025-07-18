@@ -1,0 +1,56 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: neontask-backend-pdb
+  namespace: neontask
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: neontask-backend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: neontask-frontend-pdb
+  namespace: neontask
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: neontask-frontend
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: neontask-network-policy
+  namespace: neontask
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: neontask
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 8001
+  egress:
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 443

@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: neontask-backend-service
+  namespace: neontask
+  labels:
+    app: neontask-backend
+    service: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8001
+    targetPort: 8001
+    protocol: TCP
+    name: http
+  selector:
+    app: neontask-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neontask-frontend-service
+  namespace: neontask
+  labels:
+    app: neontask-frontend
+    service: frontend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: neontask-frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neontask-loadbalancer
+  namespace: neontask
+  labels:
+    app: neontask
+    service: loadbalancer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: neontask-frontend
