@@ -1,6 +1,6 @@
 # NeonTask 
 
-A fun todo app with bouncing animations! This was my experiment learning React, FastAPI, and Docker. The todos literally bounce around the screen with physics. 😄
+A fun todo app with bouncing animations! This was my experiment learning React, FastAPI, and Docker. The todos literally bounce around the screen with physics.
 
 ## What I Built
 
